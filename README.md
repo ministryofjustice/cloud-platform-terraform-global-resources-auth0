@@ -26,7 +26,7 @@ module "global_auth0" {
 
 | Name | Version |
 |------|---------|
-| aws | n/a |
+| auth0 | n/a |
 
 ## Modules
 
@@ -36,12 +36,17 @@ No Modules.
 
 | Name |
 |------|
-| [aws_caller_identity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) |
-| [aws_region](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) |
+| [auth0_action](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/action) |
+| [auth0_client](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client) |
+| [auth0_client_grant](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client_grant) |
 
 ## Inputs
 
-No input.
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| auth0\_groupsClaim | OIDC Group Claim domain for justice cloud-platform account | `string` | `""` | no |
+| auth0\_tenant\_domain | Auth0 domain | `string` | n/a | yes |
+| moj\_github\_org | MOJ Github Org | `string` | `"ministryofjustice"` | no |
 
 ## Outputs
 
