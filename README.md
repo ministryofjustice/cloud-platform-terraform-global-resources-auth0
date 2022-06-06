@@ -8,7 +8,7 @@ Terraform module that deploys Auth0 actions
 
 ```
 module "global_auth0" {
-  source = "github.com/ministryofjustice/ccloud-platform-terraform-global-resources-auth0=1.0.0"
+  source = "github.com/ministryofjustice/ccloud-platform-terraform-global-resources-auth0?ref=1.0.0"
 
   auth0_tenant_domain = local.auth0_tenant_domain
   auth0_groupsClaim   = local.auth0_groupsClaim
