@@ -26,28 +26,39 @@ exports.onExecutePostLogin = async (event, api) => {
           audience: 'https://${auth0_tenant_domain}/api/v2/',
         };
 
-// TODO error handling
-    const mgmt_response = await axios.post(url,data)
+    try {
+      var mgmt_response = await axios.post(url,data)
+    } catch (e) {
+      console.log(e);
+      api.access.deny('Could not post data to management api');
+    }
 
     const headers = {
         'Authorization': 'Bearer '+mgmt_response.data.access_token,
         'content-type': 'application/json'
     };
     const idp_url = 'https://${auth0_tenant_domain}/api/v2/users/'+event.user.user_id
-    // TODO error handling
-    const idp_response = await axios.get(idp_url, { headers })
 
+    try {
+      var idp_response = await axios.get(idp_url, { headers })
+    } catch (e) {
+      console.log(e);
+      api.access.deny('Could not get idp details');
+    }
 
     var github_identity = _.find(idp_response.data.identities,{ connection: 'github' })
  
     // Get list of user's Github teams
-   
-   // TODO error handling
-    const users_response = await axios.get(`https://api.github.com/user/teams`, {
-    headers: {
-      'Authorization': "token " + github_identity.access_token
+    try {
+      var users_response = await axios.get(`https://api.github.com/user/teams`, {
+      headers: {
+        'Authorization': "token " + github_identity.access_token
+      }
+      });
+    } catch (e) {
+      console.log(e);
+      api.access.deny('Could not get users github teams data');
     }
-    });
 
     var teams = users_response.data
 
@@ -58,7 +69,8 @@ exports.onExecutePostLogin = async (event, api) => {
           git_teams.push("github:" + team.slug);
         }
     });
-       
+
+    // Add team list to the user's JWT as a custom claim
     api.idToken.setCustomClaim(`${auth0_groupsClaim}`, git_teams);
 
     return;

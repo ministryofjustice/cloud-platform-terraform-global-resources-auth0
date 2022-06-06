@@ -1,17 +1,19 @@
-# cloud-platform-terraform-_template_
+# cloud-platform-terraform-global-resources-auth0
 
-_note: Please remove all comments in italics and fill where required>_
+[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-global-resources-auth0/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-global-resources-auth0/releases)
 
-_Please change the urls in the release badge below_
-[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-template/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-template/releases)
-
-_Short describion of the module_
-_This Terraform module ......_
+Terraform module that deploys Auth0 actions
 
 ## Usage
 
-_Describe how to use the module_
-See the [examples/](examples/) folder.
+```
+module "global_auth0" {
+  source = "github.com/ministryofjustice/ccloud-platform-terraform-global-resources-auth0=1.0.0"
+
+  auth0_tenant_domain = local.auth0_tenant_domain
+  auth0_groupsClaim   = local.auth0_groupsClaim
+}
+```
 
 <!--- BEGIN_TF_DOCS --->
 ## Requirements
@@ -47,20 +49,7 @@ No output.
 
 <!--- END_TF_DOCS --->
 
-## Tags
-
-Some of the inputs are tags. All infrastructure resources need to be tagged according to the [MOJ techincal guidance](https://ministryofjustice.github.io/technical-guidance/standards/documenting-infrastructure-owners/#documenting-owners-of-infrastructure). The tags are stored as variables that you will need to fill out as part of your module.
-
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| application |  | string | - | yes |
-| business-unit | Area of the MOJ responsible for the service | string | `mojdigital` | yes |
-| environment-name |  | string | - | yes |
-| infrastructure-support | The team responsible for managing the infrastructure. Should be of the form team-email | string | - | yes |
-| is-production |  | string | `false` | yes |
-| team_name |  | string | - | yes |
-| sqs_name |  | string | - | yes |
-
 ## Reading Material
 
-_add link to external source_
+https://auth0.com/docs/customize/actions/use-cases
+https://auth0.com/docs/customize/actions/migrate/migrate-from-rules-to-actions
