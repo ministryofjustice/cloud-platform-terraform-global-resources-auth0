@@ -58,3 +58,41 @@ No output.
 
 https://auth0.com/docs/customize/actions/use-cases
 https://auth0.com/docs/customize/actions/migrate/migrate-from-rules-to-actions
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_auth0"></a> [auth0](#provider\_auth0) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [auth0_action.add_github_teams_to_oidc_group_claim](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/action) | resource |
+| [auth0_client.management_auth0_actions](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client) | resource |
+| [auth0_client_grant.management_grant](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client_grant) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_auth0_groupsClaim"></a> [auth0\_groupsClaim](#input\_auth0\_groupsClaim) | OIDC Group Claim domain for justice cloud-platform account | `string` | `""` | no |
+| <a name="input_auth0_tenant_domain"></a> [auth0\_tenant\_domain](#input\_auth0\_tenant\_domain) | Auth0 domain | `string` | n/a | yes |
+| <a name="input_moj_github_org"></a> [moj\_github\_org](#input\_moj\_github\_org) | MOJ Github Org | `string` | `"ministryofjustice"` | no |
+
+## Outputs
+
+No outputs.
+<!-- END_TF_DOCS -->
