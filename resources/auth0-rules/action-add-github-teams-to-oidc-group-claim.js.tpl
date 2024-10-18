@@ -50,7 +50,7 @@ exports.onExecutePostLogin = async (event, api) => {
  
     // Get list of user's Github teams
     try {
-      var users_response = await axios.get(`https://api.github.com/user/teams`, {
+      var users_response = await axios.get(`https://api.github.com/user/teams?per_page=100`, {
       headers: {
         'Authorization': "token " + github_identity.access_token
       }
@@ -72,6 +72,8 @@ exports.onExecutePostLogin = async (event, api) => {
 
     // Add team list to the user's JWT as a custom claim
     api.idToken.setCustomClaim(`${auth0_groupsClaim}`, git_teams);
+
+    api.user.setUserMetadata("gh_teams", git_teams)
 
     return;
 
