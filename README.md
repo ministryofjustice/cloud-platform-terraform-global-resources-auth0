@@ -81,6 +81,7 @@ No modules.
 | Name | Type |
 |------|------|
 | [auth0_action.add_github_teams_to_oidc_group_claim](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/action) | resource |
+| [auth0_action.allow-gh-orgs](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/action) | resource |
 | [auth0_client.management_auth0_actions](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client) | resource |
 | [auth0_client_grant.management_grant](https://registry.terraform.io/providers/auth0/auth0/latest/docs/resources/client_grant) | resource |
 | [auth0_client.management_auth0_actions](https://registry.terraform.io/providers/auth0/auth0/latest/docs/data-sources/client) | data source |
