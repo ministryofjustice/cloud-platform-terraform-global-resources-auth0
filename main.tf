@@ -35,17 +35,28 @@ data "auth0_client" "management_auth0_actions" {
 
 resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
   name    = "add-github-teams-to-oidc-group-claim"
-  runtime = "node16"
+  runtime = "node18"
   deploy  = true
-  code = templatefile("${path.module}/resources/auth0-actions/action-add-github-teams-to-oidc-group-claim.js.tpl", {
-    auth0_tenant_domain = var.auth0_tenant_domain
-    auth0_groupsClaim   = var.auth0_groupsClaim
-    moj_github_org      = var.moj_github_org
-  })
+  code    = file("${path.module}/resources/auth0-actions/action-add-github-teams-to-oidc-group-claim.js")
 
   supported_triggers {
     id      = "post-login"
     version = "v3"
+  }
+
+  secrets {
+    name  = "AUTH0_TENANT_DOMAIN"
+    value = var.auth0_tenant_domain
+  }
+
+  secrets {
+    name  = "AUTH0_GROUPS_CLAIM"
+    value = var.auth0_groupsClaim
+  }
+
+  secrets {
+    name  = "MOJ_ORG"
+    value = var.moj_github_org
   }
 
   secrets {
