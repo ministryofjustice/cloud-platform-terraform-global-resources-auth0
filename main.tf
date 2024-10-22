@@ -36,7 +36,7 @@ resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
   name    = "add-github-teams-to-oidc-group-claim"
   runtime = "node16"
   deploy  = true
-  code = templatefile("${path.module}/resources/auth0-rules/action-add-github-teams-to-oidc-group-claim.js.tpl", {
+  code = templatefile("${path.module}/resources/auth0-actions/action-add-github-teams-to-oidc-group-claim.js.tpl", {
     auth0_tenant_domain = var.auth0_tenant_domain
     auth0_groupsClaim   = var.auth0_groupsClaim
     moj_github_org      = var.moj_github_org
@@ -55,5 +55,19 @@ resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
   secrets {
     name  = "MGMT_SECRET"
     value = data.auth0_client.management_auth0_actions.client_secret
+  }
+}
+
+resource "auth0_action" "allow-gh-orgs" {
+  name = "add-github-teams-to-opensearch-saml"
+  code = file(
+    "${path.module}/resources/auth0-actions/allow-github-orgs.js",
+  )
+  deploy  = true
+  runtime = "node18"
+
+  supported_triggers {
+    id      = "post-login"
+    version = "v3"
   }
 }

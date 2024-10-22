@@ -51,9 +51,15 @@ exports.onExecutePostLogin = async (event, api) => {
     // Get list of user's Github teams
     try {
       var users_response = await axios.get(`https://api.github.com/user/teams?per_page=100`, {
-      headers: {
-        'Authorization': "token " + github_identity.access_token
-      }
+        headers: {
+          'Authorization': "token " + github_identity.access_token
+        }
+      })
+
+      var users_orgs = await axios.get(`https://api.github.com/user/orgs`, {
+        headers: {
+          'Authorization': "token " + github_identity.access_token
+        }
       });
     } catch (e) {
       console.log(e);
@@ -61,8 +67,10 @@ exports.onExecutePostLogin = async (event, api) => {
     }
 
     var teams = users_response.data
+    var orgs = users_response.data
 
     var git_teams = [];
+    var git_orgs = []
 
     _.forEach(teams, function(team, i) { 
         if (team.organization.login === "${moj_github_org}") {
@@ -70,10 +78,15 @@ exports.onExecutePostLogin = async (event, api) => {
         }
     });
 
+    _.forEach(orgs, function(org) { 
+        git_orgs.push(org.login);
+    });
+
     // Add team list to the user's JWT as a custom claim
     api.idToken.setCustomClaim(`${auth0_groupsClaim}`, git_teams);
 
     api.user.setUserMetadata("gh_teams", git_teams)
+    api.user.setUserMetadata("gh_orgs", git_orgs)
 
     return;
 
