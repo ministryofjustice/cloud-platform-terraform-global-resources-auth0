@@ -3,10 +3,11 @@ provider "auth0" {
 }
 
 resource "auth0_client" "management_auth0_actions" {
-  name        = "management:auth0-actions"
-  description = "Cloud Platform machine to machine application to manage Auth0 actions"
-  logo_uri    = "https://ministryofjustice.github.io/assets/moj-crest.png"
-  app_type    = "non_interactive"
+  name              = "management:auth0-actions"
+  description       = "Cloud Platform machine to machine application to manage Auth0 actions"
+  logo_uri          = "https://ministryofjustice.github.io/assets/moj-crest.png"
+  app_type          = "non_interactive"
+  cross_origin_auth = true
 
   custom_login_page_on = true
   is_first_party       = true
