@@ -60,7 +60,7 @@ resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
 }
 
 resource "auth0_action" "allow-gh-orgs" {
-  name = "add-github-teams-to-opensearch-saml"
+  name = "add-github-moj-orgs"
   code = file(
     "${path.module}/resources/auth0-actions/allow-github-orgs.js",
   )
