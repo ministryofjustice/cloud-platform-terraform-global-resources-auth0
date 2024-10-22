@@ -67,7 +67,7 @@ exports.onExecutePostLogin = async (event, api) => {
     }
 
     var teams = users_response.data
-    var orgs = users_response.data
+    var orgs = users_orgs.data
 
     var git_teams = [];
     var git_orgs = []
