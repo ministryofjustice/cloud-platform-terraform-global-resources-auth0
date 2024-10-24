@@ -1,17 +1,19 @@
 exports.onExecutePostLogin = async (event, api) => {
   const axios = require("axios");
+  const {
+    MGMT_ID,
+    MGMT_SECRET,
+    AUTH0_TENANT_DOMAIN,
+    AUTH0_GROUPS_CLAIM,
+    MOJ_ORG,
+  } = event.secrets;
+
+  const github_org_allow_list = [MOJ_ORG];
+
   let userOrgs;
   let userTeams;
 
   if (event.connection.strategy === "github") {
-    const {
-      MGMT_ID,
-      MGMT_SECRET,
-      AUTH0_TENANT_DOMAIN,
-      AUTH0_GROUPS_CLAIM,
-      MOJ_ORG,
-    } = event.secrets;
-
     const url = `https://${AUTH0_TENANT_DOMAIN}/oauth/token`;
 
     var data = {
@@ -43,14 +45,22 @@ exports.onExecutePostLogin = async (event, api) => {
         },
       };
 
+      userOrgs = await axios.get(`https://api.github.com/user/orgs`, {
+        githubHeaders,
+      });
+
+      const authorized = github_org_allow_list.some(
+        (org) => userOrgs.data.indexOf(org) !== -1,
+      );
+
+      if (!authorized) {
+        return api.access.deny("Access denied.");
+      }
+
       userTeams = await axios.get(
         `https://api.github.com/user/teams?per_page=100`,
         githubHeaders,
       );
-
-      userOrgs = await axios.get(`https://api.github.com/user/orgs`, {
-        githubHeaders,
-      });
     } catch (e) {
       api.access.deny(
         "Could not return valid result from the management api and github",
@@ -61,13 +71,10 @@ exports.onExecutePostLogin = async (event, api) => {
       .filter((t) => (t.organization.login === MOJ_ORG ? true : false))
       .map((t) => `github:${t.slug}`);
 
-    const allOrgs = userOrgs.data.map((o) => o.login);
-
     // Add team list to the user's JWT as a custom claim
     api.idToken.setCustomClaim(`${AUTH0_GROUPS_CLAIM}`, mojTeams);
 
     api.user.setUserMetadata("gh_teams", mojTeams);
-    api.user.setUserMetadata("gh_orgs", allOrgs);
 
     return;
   } else {
