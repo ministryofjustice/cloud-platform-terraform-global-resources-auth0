@@ -43,6 +43,10 @@ resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
     id      = "post-login"
     version = "v3"
   }
+  dependencies {
+    name    = "axios"
+    version = "1.7.7"
+  }
 
   secrets {
     name  = "AUTH0_TENANT_DOMAIN"

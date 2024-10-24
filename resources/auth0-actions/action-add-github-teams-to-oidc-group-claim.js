@@ -1,5 +1,6 @@
 exports.onExecutePostLogin = async (event, api) => {
   const axios = require("axios");
+
   const {
     MGMT_ID,
     MGMT_SECRET,
@@ -8,11 +9,8 @@ exports.onExecutePostLogin = async (event, api) => {
     MOJ_ORG,
   } = event.secrets;
 
-  const github_org_allow_list = [MOJ_ORG];
-
   let userOrgs;
   let userTeams;
-
   if (event.connection.strategy === "github") {
     const url = `https://${AUTH0_TENANT_DOMAIN}/oauth/token`;
 
@@ -46,12 +44,10 @@ exports.onExecutePostLogin = async (event, api) => {
       };
 
       userOrgs = await axios.get(`https://api.github.com/user/orgs`, {
-        githubHeaders,
+        ...githubHeaders,
       });
 
-      const authorized = github_org_allow_list.some(
-        (org) => userOrgs.data.indexOf(org) !== -1,
-      );
+      const authorized = userOrgs.data.some((org) => org.login === MOJ_ORG);
 
       if (!authorized) {
         return api.access.deny("Access denied.");
@@ -59,7 +55,7 @@ exports.onExecutePostLogin = async (event, api) => {
 
       userTeams = await axios.get(
         `https://api.github.com/user/teams?per_page=100`,
-        githubHeaders,
+        { ...githubHeaders },
       );
     } catch (e) {
       api.access.deny(
