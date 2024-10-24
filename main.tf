@@ -45,7 +45,7 @@ resource "auth0_action" "add_github_teams_to_oidc_group_claim" {
   }
   dependencies {
     name    = "axios"
-    version = "1.7"
+    version = "1.7.7"
   }
 
   secrets {
